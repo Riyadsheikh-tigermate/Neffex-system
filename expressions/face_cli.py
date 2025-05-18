@@ -1,36 +1,30 @@
-import os
-import time
-import json
+# expressions/face_cli.py
 
-FACE_MAP = {
-    "happy": "(＾▽＾)",
-    "sad": "(；＿；)",
-    "angry": "(｀Д´)",
-    "thinking": "(◎_◎;)",
+import time
+import os
+
+expressions = {
+    "happy": "( ＾◡＾)っ",
+    "sad": "(︶︹︺)",
+    "angry": "(ಠ_ಠ)",
+    "thinking": "(◔ ⌣ ◔)",
+    "sleepy": "(-_-) zzz",
+    "surprised": "(⊙_☉)",
     "neutral": "(・_・)",
-    "excited": "＼(＾▽＾)／",
-    "surprised": "Σ(ﾟДﾟ)"
+    "love": "(♥‿♥)"
 }
 
-def load_current_mood():
-    try:
-        with open("core/memory.json", "r", encoding='utf-8') as f:
-            memory = json.load(f)
-            return memory.get("mood", "neutral")
-    except:
-        return "neutral"
-
-def display_face(mood=None):
-    mood = mood or load_current_mood()
-    face = FACE_MAP.get(mood, FACE_MAP["neutral"])
-    
-    os.system('cls' if os.name == 'nt' else 'clear')
-    print("\n\n")
-    print("   😃 Neffex is Feeling:")
-    print(f"   {face}  ← ({mood.upper()})")
-    print("\n\n")
+def show_expression(emotion="neutral"):
+    os.system('clear' if os.name != 'nt' else 'cls')
+    face = expressions.get(emotion, expressions["neutral"])
+    print("\n🧠 Neffex Emotion Display")
+    print("="*30)
+    print(f" Current Mood: {emotion.upper()}")
+    print(f" Expression:  {face}")
+    print("="*30)
 
 if __name__ == "__main__":
     while True:
-        display_face()
-        time.sleep(3)
+        for emotion in expressions:
+            show_expression(emotion)
+            time.sleep(1.5)
