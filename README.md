@@ -12,3 +12,16 @@ pip install edge-tts
 sudo apt install mpg123
 
 pip install wikipedia google
+
+Warning:
+Change net/ai_connect.py 
+
+
+🛠️ API Key Setup:
+Add this to your .bashrc or .zshrc or terminal:
+
+bash
+Copy
+Edit
+export OPENAI_API_KEY="your_openai_api_key_here"
+Or put it in config.json and load from there
