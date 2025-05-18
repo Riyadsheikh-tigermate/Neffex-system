@@ -9,10 +9,12 @@ pip install edge-tts
 
 
 
+pip install openai
+
 sudo apt install mpg123
 
 pip install wikipedia google
-
+|||||||||||||||||||||||||||||||
 Warning:
 Change net/ai_connect.py 
 
