@@ -1,0 +1,15 @@
+{
+  "name": "Neffex",
+  "language_mode": "auto",               // "bangla", "english", or "auto"
+  "wake_word": "neffex",
+  "default_voice": "male",               // or "female"
+  "voice_engine": "pyttsx3",             // or "edge-tts", "bark"
+  "camera_enabled": true,
+  "emotions_enabled": true,
+  "internet_access": true,
+  "ai_model": "gpt-4",                   // or "gemini-pro", "local-llm"
+  "log_conversations": true,
+  "mood_indicator": "circle",            // or "led", "emoji"
+  "web_panel_enabled": true,
+  "auto_update_memory": true
+}
