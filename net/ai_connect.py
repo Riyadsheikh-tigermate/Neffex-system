@@ -1,21 +1,23 @@
-import os
+# net/ai_connect.py
+
 import openai
+import json
 
-# Load your API key from environment variable or config file
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Or load from config.json
+with open("config.json") as f:
+    config = json.load(f)
 
-def ask_gpt(prompt, lang="en"):
+openai.api_key = "YOUR_OPENAI_API_KEY"  # Replace with your key
+
+def ask_gpt(prompt, lang='en'):
     try:
-        full_prompt = f"Answer in {lang.upper()}: {prompt}"
+        system_prompt = "You are a helpful AI named Neffex. Reply in " + ("Bangla." if lang == "bn" else "English.")
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # You can upgrade to GPT-4 if available
+            model="gpt-4",
             messages=[
-                {"role": "system", "content": f"You are Neffex, a helpful assistant that responds in {lang.upper()}."},
-                {"role": "user", "content": full_prompt}
-            ],
-            temperature=0.7,
-            max_tokens=200
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt}
+            ]
         )
-        return response.choices[0].message['content'].strip()
+        return response['choices'][0]['message']['content'].strip()
     except Exception as e:
-        return f"AI connection failed: {str(e)}"
+        return f"GPT error: {str(e)}"
