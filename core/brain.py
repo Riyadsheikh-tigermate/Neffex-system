@@ -9,6 +9,10 @@ from core.emotions import EmotionManager
 from tools.translator import detect_language, translate_text
 from core.wake_word import detect_wake_word
 from core.memory import load_memory, save_memory
+from core.emotions import EmotionEngine
+emotion = EmotionEngine()
+emotion.detect_emotion(user_input)
+print("Mood:", emotion.get_emotion(), emotion.express_emotion())
 
 class NeffexBrain:
     def __init__(self):
