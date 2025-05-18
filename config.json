@@ -1,6 +1,7 @@
 {
   "name": "Neffex",
   "language_mode": "auto",               // "bangla", "english", or "auto"
+  "default_language": "bn",  // or "en"
   "wake_word": "neffex",
   "default_voice": "male",               // or "female"
   "voice_engine": "pyttsx3",             // or "edge-tts", "bark"
@@ -12,4 +13,7 @@
   "mood_indicator": "circle",            // or "led", "emoji"
   "web_panel_enabled": true,
   "auto_update_memory": true
+  "gpt_api_key": "YOUR_API_KEY"
 }
+
+
