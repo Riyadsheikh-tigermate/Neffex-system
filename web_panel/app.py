@@ -1,32 +1,45 @@
+# web_panel/app.py
+
 from flask import Flask, render_template, request, jsonify
 import json
 import os
-import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from core import brain
+import subprocess
 
 app = Flask(__name__)
 
-@app.route('/')
+CONFIG_PATH = "config.json"
+
+# Load config
+def load_config():
+    with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+# Save config
+def save_config(data):
+    with open(CONFIG_PATH, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4)
+
+@app.route("/")
 def index():
-    return render_template('index.html')
+    config = load_config()
+    return render_template("index.html", config=config)
 
-@app.route('/ask', methods=['POST'])
-def ask():
-    user_input = request.json['message']
-    lang = request.json.get('lang', 'en')
-    response = brain.process(user_input, lang)
-    return jsonify({'response': response})
-
-@app.route('/status')
-def status():
+@app.route("/update_config", methods=["POST"])
+def update_config():
     try:
-        with open('config.json', 'r', encoding='utf-8') as f:
-            config = json.load(f)
-        return jsonify(config)
+        data = request.json
+        save_config(data)
+        return jsonify({"status": "success"})
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return jsonify({"status": "error", "message": str(e)})
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+@app.route("/run_ai")
+def run_ai():
+    try:
+        subprocess.Popen(["python3", "main.py"])  # Launch main AI logic
+        return jsonify({"status": "launched"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
