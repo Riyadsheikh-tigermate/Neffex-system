@@ -1,19 +1,48 @@
-import requests
+# net/web_access.py
+
 import wikipedia
+import requests
+from bs4 import BeautifulSoup
+import json
 
-def google_search(query):
-    try:
-        from googlesearch import search
-        return list(search(query, num=5, stop=5, pause=2))
-    except Exception as e:
-        return [f"Google search failed: {str(e)}"]
+# Load config
+with open("config.json", "r", encoding="utf-8") as f:
+    config = json.load(f)
 
-def wikipedia_summary(query, lang="en"):
+DEFAULT_LANG = config.get("default_language", "en")  # 'en' or 'bn'
+
+def search_wikipedia(query, lang=DEFAULT_LANG):
     try:
         wikipedia.set_lang(lang)
         summary = wikipedia.summary(query, sentences=2)
         return summary
-    except wikipedia.exceptions.DisambiguationError as e:
-        return f"Too many results found for '{query}': {e.options[:3]}"
     except Exception as e:
-        return f"Wikipedia error: {str(e)}"
+        return None
+
+def search_duckduckgo(query):
+    try:
+        url = f"https://duckduckgo.com/html/?q={query}"
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        results = soup.find_all('a', class_='result__a', limit=1)
+        if results:
+            return results[0].text
+        return None
+    except:
+        return None
+
+def smart_search(query, lang=DEFAULT_LANG):
+    result = search_wikipedia(query, lang)
+    if result:
+        return result
+    else:
+        result = search_duckduckgo(query)
+        if result:
+            return f"(Fallback) {result}"
+        else:
+            return "⚠️ কোনো তথ্য খুঁজে পাওয়া যায়নি / No information found."
+
+# Example test
+if __name__ == "__main__":
+    print(smart_search("বাংলাদেশ"))
