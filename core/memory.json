@@ -1,0 +1,11 @@
+{
+  "user_profile": {
+    "name": "User",
+    "language_preference": "auto",
+    "wake_word": "neffex"
+  },
+  "conversation_history": [],
+  "emotion_log": [],
+  "knowledge_bank": {},
+  "custom_notes": {}
+}
