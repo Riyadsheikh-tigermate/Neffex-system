@@ -1,3 +1,15 @@
+Incomplete neffex system process and folders
+
+Full Project CHatgpt Link:
+
+
+https://chatgpt.com/share/6829fcbf-6cfc-800c-a5ca-643bc9d3ba8d
+
+
+
+
+
+
 Everything is possible!
 Nothing is possible
 I am trying to possible my wish
