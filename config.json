@@ -1,19 +1,24 @@
 {
   "name": "Neffex",
-  "language_mode": "auto",               // "bangla", "english", or "auto"
-  "default_language": "bn",  // or "en"
+  "language_detection": true,
+  "default_language": "en",
+  "supported_languages": ["en", "bn"],
+  "voice_settings": {
+    "english_voice": "default",
+    "bangla_voice": "bn_voice",
+    "speed": 1.0,
+    "volume": 1.0
+  },
   "wake_word": "neffex",
-  "default_voice": "male",               // or "female"
-  "voice_engine": "pyttsx3",             // or "edge-tts", "bark"
-  "camera_enabled": true,
-  "emotions_enabled": true,
   "internet_access": true,
-  "ai_model": "gpt-4",                   // or "gemini-pro", "local-llm"
-  "log_conversations": true,
-  "mood_indicator": "circle",            // or "led", "emoji"
-  "web_panel_enabled": true,
-  "auto_update_memory": true
-  "gpt_api_key": "YOUR_API_KEY"
+  "use_gpt": true,
+  "use_gemini": false,
+  "use_camera": true,
+  "use_mic": true,
+  "expression_enabled": true,
+  "emotions_enabled": true,
+  "save_logs": true,
+  "web_ui_port": 5000,
+  "version": "1.0",
+  "upgrade_ready": true
 }
-
-
