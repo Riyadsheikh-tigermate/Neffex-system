@@ -1,13 +1,11 @@
-# web_panel/app.py
-
 from flask import Flask, render_template, request, jsonify
 import json
 import os
 import subprocess
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
-CONFIG_PATH = "config.json"
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..', 'config.json')
 
 # Load config
 def load_config():
@@ -36,7 +34,16 @@ def update_config():
 @app.route("/run_ai")
 def run_ai():
     try:
-        subprocess.Popen(["python3", "main.py"])  # Launch main AI logic
+        # Get absolute path to brain.py
+        brain_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'core', 'brain.py'))
+        venv_activate = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'venv', 'bin', 'activate'))
+
+        # Run brain.py inside virtual environment
+        subprocess.Popen(
+            f"source {venv_activate} && python3 {brain_path}",
+            shell=True,
+            executable="/bin/bash"
+        )
         return jsonify({"status": "launched"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
