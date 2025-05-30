@@ -2,51 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neffex Control Panel</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0d1117;
-            color: #e6edf3;
             margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            color: #e6edf3;
+            background: linear-gradient(-45deg, #0d1117, #1f2937, #111827, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
         }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         header {
-            background-color: #161b22;
-            padding: 20px;
             text-align: center;
+            padding: 20px;
+            background-color: rgba(22, 27, 34, 0.9);
+            box-shadow: 0 2px 10px #000;
         }
+
         h1 {
             margin: 0;
             color: #58a6ff;
         }
+
         .container {
-            padding: 20px;
+            max-width: 600px;
+            margin: 30px auto;
+            background: rgba(22, 27, 34, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
+
         label {
             display: block;
-            margin-top: 15px;
+            margin-top: 20px;
+            font-weight: bold;
         }
+
         input[type="text"], input[type="number"] {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
+            margin-top: 8px;
+            border-radius: 6px;
             border: none;
             background-color: #21262d;
             color: #e6edf3;
+            box-sizing: border-box;
         }
-        input[type="submit"], .btn {
+
+        .btn {
             margin-top: 20px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             background-color: #238636;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
+            font-weight: bold;
         }
-        input[type="submit"]:hover, .btn:hover {
+
+        .btn:hover {
             background-color: #2ea043;
+        }
+
+        .avatar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar img {
+            width: 150px;
+            border-radius: 50%;
+            border: 3px solid #58a6ff;
+        }
+
+        .status {
+            margin-top: 15px;
+            font-style: italic;
+            color: #8b949e;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .avatar img {
+                width: 100px;
+            }
         }
     </style>
 </head>
@@ -54,22 +108,56 @@
     <header>
         <h1>Neffex AI Brain - Control Panel</h1>
     </header>
+
     <div class="container">
-        <form action="/update_config" method="post">
-            <label for="language">Preferred Language (en, bn, ja):</label>
-            <input type="text" name="language" id="language" required>
+        <div class="avatar">
+            <img src="https://i.postimg.cc/43WBdzqr/avatar2d.png" alt="Neffex Avatar">
+        </div>
 
-            <label for="voice">Preferred Voice (male, female):</label>
-            <input type="text" name="voice" id="voice" required>
+        <label for="language">Preferred Language (en, bn, ja):</label>
+        <input type="text" id="language" placeholder="en">
 
-            <label for="wake_word">Wake Word:</label>
-            <input type="text" name="wake_word" id="wake_word" required>
+        <label for="voice">Preferred Voice (male, female):</label>
+        <input type="text" id="voice" placeholder="female">
 
-            <input type="submit" value="Update Config">
-        </form>
-        <form action="/start_ai" method="post">
-            <button class="btn">Start Neffex AI</button>
-        </form>
+        <label for="wake_word">Wake Word:</label>
+        <input type="text" id="wake_word" placeholder="neffex">
+
+        <button class="btn" onclick="updateConfig()">💾 Save Settings</button>
+        <button class="btn" style="background-color:#2563eb;" onclick="runAI()">⚙️ Start Neffex AI</button>
+        <button class="btn" style="background-color:#d97706;" onclick="speakText()">🎤 Voice Test</button>
+
+        <p class="status" id="status"></p>
     </div>
+
+    <script>
+        async function updateConfig() {
+            const data = {
+                language: document.getElementById("language").value,
+                voice: document.getElementById("voice").value,
+                wake_word: document.getElementById("wake_word").value
+            };
+
+            const res = await fetch('/update_config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+            document.getElementById("status").textContent = result.status === 'success' ? "✅ Config saved." : `❌ Error: ${result.message}`;
+        }
+
+        async function runAI() {
+            const res = await fetch('/run_ai');
+            const result = await res.json();
+            document.getElementById("status").textContent = result.status === 'launched' ? "🚀 Neffex AI started." : `❌ Error: ${result.message}`;
+        }
+
+        function speakText() {
+            const msg = new SpeechSynthesisUtterance("Hello, I am Neffex AI. How can I help you?");
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
 </body>
 </html>
