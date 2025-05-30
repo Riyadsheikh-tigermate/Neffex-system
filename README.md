@@ -48,6 +48,8 @@ bash:
 
 export OPENAI_API_KEY="your_openai_api_key_here"
 
+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
+
 
 
 
