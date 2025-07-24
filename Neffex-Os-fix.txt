@@ -1,0 +1,29 @@
+# Basic info
+networking.hostName = "neffex"; # changeable
+
+# Desktop: KDE Plasma
+services.xserver.enable = true;
+services.xserver.displayManager.sddm.enable = true;
+services.xserver.desktopManager.plasma5.enable = true;
+
+# Firmware & Drivers
+hardware.enableAllFirmware = true;
+hardware.enableRedistributableFirmware = true;
+services.xserver.videoDrivers = [ "modesetting" ];
+
+# VMware guest support (optional)
+services.vmwareGuest.enable = true;
+
+# Extra tools
+environment.systemPackages = with pkgs; [
+  git curl neovim btop htop gparted
+  firefox
+  neofetch
+];
+
+# Optional improvements
+programs.zsh.enable = true;
+programs.starship.enable = true;
+
+# Enable flakes
+nix.settings.experimental-features = [ "nix-command" "flakes" ];
