@@ -1,0 +1,27 @@
+// Get screen resolution
+screen_width = Window.GetWidth();
+screen_height = Window.GetHeight();
+
+// Load and scale big logo
+logo_image = Image("logo.png");
+logo_target_width = screen_width * 0.35;  // 35% of screen width
+logo_scale_factor = logo_target_width / logo_image.GetWidth();
+logo_image.Scale(logo_scale_factor, logo_scale_factor);
+
+logo_sprite = Sprite(logo_image);
+logo_sprite.SetPosition(
+    (screen_width - logo_image.GetWidth()) / 2,
+    (screen_height - logo_image.GetHeight()) / 2 - 50
+);
+
+// Load and scale bottom watermark
+watermark_image = Image("watermark.png");
+watermark_target_width = screen_width * 0.25;  // 25% of screen width
+watermark_scale_factor = watermark_target_width / watermark_image.GetWidth();
+watermark_image.Scale(watermark_scale_factor, watermark_scale_factor);
+
+watermark_sprite = Sprite(watermark_image);
+watermark_sprite.SetPosition(
+    (screen_width - watermark_image.GetWidth()) / 2,
+    screen_height - watermark_image.GetHeight() - 40
+);
